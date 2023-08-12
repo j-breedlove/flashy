@@ -26,6 +26,11 @@ card_word = None
 
 # Load data from CSV
 def load_data():
+    """
+        Load data from CSV files. If 'words_to_learn.csv' is not found,
+        the function will fall back to 'french_words.csv'.
+        The data is then converted into a list of dictionaries.
+    """
     global to_learn
     try:
         data = pd.read_csv(WORDS_TO_LEARN_PATH)
@@ -38,6 +43,10 @@ def load_data():
 
 # Display the next card
 def next_card():
+    """
+        Display the next card with the French word.
+        This function also sets up a timer to flip the card after 3 seconds.
+    """
     global current_card, flip_timer
     window.after_cancel(flip_timer)
     current_card = random.choice(to_learn)
@@ -49,6 +58,9 @@ def next_card():
 
 # Flip the card to show the English word
 def flip_card():
+    """
+    Flip the card to display the English translation of the word.
+    """
     canvas.itemconfig(card_title, text="English", fill="white")
     canvas.itemconfig(card_word, text=current_card["English"], fill="white")
     canvas.itemconfig(canvas_image, image=card_back_img)
@@ -56,6 +68,10 @@ def flip_card():
 
 # Remove the card from the list and update the CSV
 def remove_card():
+    """
+       Remove the current card from the list of words to learn.
+       After removal, the updated list is saved back to 'words_to_learn.csv'.
+    """
     to_learn.remove(current_card)
     next_card()
     need_to_learn_data = pd.DataFrame(to_learn)
@@ -64,6 +80,10 @@ def remove_card():
 
 # UI Setup
 def setup_ui():
+    """
+       Set up the User Interface for the application.
+       This includes creating the main window, canvas, buttons, and other UI elements.
+    """
     global window, canvas, card_front_img, card_back_img, flip_timer, canvas_image, card_title, card_word
 
     window = Tk()
